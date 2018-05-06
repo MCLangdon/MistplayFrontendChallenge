@@ -15,8 +15,4 @@
         android:centerColor="#50e3c2"
         android:endColor="#d7fcf4" />
 
-    <!--
-    <solid android:color="@color/divider" />
-    -->
-
 </shape>

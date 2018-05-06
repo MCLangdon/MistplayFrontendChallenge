@@ -82,9 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                // Update search results based on new input
-                EditText simpleEditText = (EditText) findViewById(R.id.search_edit_text);
-                String strValue = simpleEditText.getText().toString();
+                // When input text is changed, get new search results based on new input
+                String strValue = editTextSearch.getText().toString();
                 CommunicationManager.getInstance().searchString(strValue);
             }
         });

@@ -33,8 +33,10 @@ public class ImageRequest extends AsyncTask<Game, String, Drawable> {
     protected Drawable doInBackground(Game... games) {
         Drawable result = null;
         try {
+            // Create Drawable from game's imageURL
             InputStream is = (InputStream) new URL(imageURL).getContent();
             result = Drawable.createFromStream(is, "src name");
+            is.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

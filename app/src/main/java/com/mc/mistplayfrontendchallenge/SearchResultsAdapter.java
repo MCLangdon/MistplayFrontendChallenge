@@ -45,13 +45,14 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+        // When a game etners view, set values of game to display
         Game game = gamesList.get(position);
         holder.title.setText(game.getTitle());
         holder.subgenre.setText(game.getSubGenre());
         holder.rating.setText(String.valueOf(game.getRating()));
         holder.ratingCount.setText(String.valueOf(game.getRatingCount()));
 
-        // Must fetch game image in a different thread
+        // Use ImageRequest to fetch game image in a different thread, as networking cannot be done in the main thread.
         new ImageRequest(holder.image, game.getImgURL()).execute();
     }
 
@@ -59,5 +60,4 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     public int getItemCount() {
         return gamesList.size();
     }
-
 }
