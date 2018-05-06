@@ -1,11 +1,13 @@
 package com.mc.mistplayfrontendchallenge;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CommunicationManager {
 
     private static CommunicationManager instance;
-
+    private int resultsIndex = 1;
+    private String query;
 
     public static CommunicationManager getInstance(){
         if (instance == null) {
@@ -14,16 +16,30 @@ public class CommunicationManager {
         return instance;
     }
 
-    public ArrayList<Game> searchString(String toSearch){
-        //TODO
-        // REMOVE AFTER TESTING:
-        System.out.println("Searching for : " + toSearch);
-        Game gameResult = new Game();
-        gameResult.setTitle(toSearch);
-        gameResult.setRating(4.0);
-        gameResult.setSubGenre("Strategy");
-        ArrayList<Game> result = new ArrayList<>();
-        result.add(gameResult);
-        return result;
+    public void searchString(String toSearch){
+        query = toSearch;
+        MainActivity.getInstance().clearGames();
+        // Request first page of results from server
+        //new RequestTask().execute("http://10.0.2.2:8080/games/1");
+
+        // To prevent running out of pages on dummy server, randomly select a page number betwen 1 and 3.
+        // When using the intended server, use above commented lines instead to get first page of results.
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(3) + 1;
+        String url = "http://10.0.2.2:8080/games/" + randomIndex;
+        new RequestTask().execute(url);
+
+    }
+
+    public void loadMoreResults(){
+        // Not a new query, do not clear current results.
+        resultsIndex++;
+
+        // To prevent running out of pages on dummy server, randomly select a page number betwen 1 and 3.
+        // When using the intended server, use resultsIndex instead of randomIndex.
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(3) + 1;
+        String url = "http://10.0.2.2:8080/games/" + randomIndex;
+        new RequestTask().execute(url);
     }
 }

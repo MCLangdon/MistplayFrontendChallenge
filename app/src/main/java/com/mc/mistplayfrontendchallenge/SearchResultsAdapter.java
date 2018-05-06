@@ -1,12 +1,17 @@
 package com.mc.mistplayfrontendchallenge;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.MyViewHolder>{
@@ -15,14 +20,19 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         public TextView title;
         public TextView subgenre;
         public TextView rating;
+        public TextView ratingCount;
+        public ImageView image;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             subgenre = (TextView) view.findViewById(R.id.subgenre);
             rating = (TextView) view.findViewById(R.id.rating);
+            ratingCount = (TextView) view.findViewById(R.id.ratingCount);
+            image = (ImageView) view.findViewById(R.id.image);
         }
     }
+
     public SearchResultsAdapter(List<Game> gamesList){
         this. gamesList = gamesList;
     }
@@ -39,19 +49,15 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         holder.title.setText(game.getTitle());
         holder.subgenre.setText(game.getSubGenre());
         holder.rating.setText(String.valueOf(game.getRating()));
-    }
+        holder.ratingCount.setText(String.valueOf(game.getRatingCount()));
 
+        // Must fetch game image in a different thread
+        new ImageRequest(holder.image, game.getImgURL()).execute();
+    }
 
     @Override
     public int getItemCount() {
         return gamesList.size();
     }
 
-//    public void clear(){
-//        gamesList.clear();
-//    }
-//
-//    public void add(Game game){
-//        gamesList.add(game);
-//    }
 }

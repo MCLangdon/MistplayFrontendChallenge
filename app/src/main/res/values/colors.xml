@@ -7,6 +7,9 @@
     <color name="white">#FFFFFF</color>
     <color name="hint">#555555</color>
 
-    <color name="rating">#999999</color>
     <color name="title">#f9f9f9</color>
+    <color name="subgenre">#c1c1c1</color>
+    <color name="rating">#d6bd64</color>
+    <color name="ratingCount">#afa787</color>
+
 </resources>

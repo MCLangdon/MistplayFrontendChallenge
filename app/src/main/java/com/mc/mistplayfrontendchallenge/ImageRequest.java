@@ -35,32 +35,11 @@ public class ImageRequest extends AsyncTask<Game, String, Drawable> {
         try {
             InputStream is = (InputStream) new URL(imageURL).getContent();
             result = Drawable.createFromStream(is, "src name");
-
-//            String imageURL = games[0].getImgURL();
-//            URL imageEndpoint = new URL(imageURL);
-//            HttpURLConnection myConnection = null;
-//            try {
-//                myConnection = (HttpURLConnection) imageEndpoint.openConnection();
-//            } catch (Exception e){
-//                e.printStackTrace();
-//            }
-//
-//            myConnection.setRequestProperty("User-Agent", "mistplayfrontendchallenge-app-v0.1");
-//            if (myConnection.getResponseCode() == 200) {
-//                // Success
-//                InputStream responseBody = myConnection.getInputStream();
-//                String imageString = IOUtils.toString(responseBody, "UTF-8");
-//
-//            } else {
-//                System.out.println("Error: response failed");
-//            }
-//            myConnection.disconnect();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         return result;
     }
@@ -75,62 +54,4 @@ public class ImageRequest extends AsyncTask<Game, String, Drawable> {
             view.setImageDrawable(result);
         }
     }
-
-//    @Override
-//    protected Game doInBackground(String... uri) {
-//        String responseString = null;
-//        try {
-//            // Create URL
-//            URL gamesDatabaseEndpoint = null;
-//            gamesDatabaseEndpoint = new URL(uri[0]);
-//
-//            // Create connection
-//            HttpURLConnection myConnection = null;
-//            try {
-//                myConnection = (HttpURLConnection) gamesDatabaseEndpoint.openConnection();
-//            } catch (Exception e){
-//                e.printStackTrace();
-//            }
-//            myConnection.setRequestProperty("User-Agent", "mistplayfrontendchallenge-app-v0.1");
-//
-//            if (myConnection.getResponseCode() == 200) {
-//                // Success
-//                InputStream responseBody = myConnection.getInputStream();
-//                responseString = IOUtils.toString(responseBody, "UTF-8");
-//            } else {
-//                System.out.println("Error: response failed");
-//            }
-//            myConnection.disconnect();
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return responseString;
-//    }
-//
-//    @Override
-//    protected void onPostExecute(String result) {
-//        super.onPostExecute(result);
-//        if (result == null){
-//            System.out.println("Network error: no response received");
-//            Game error = new Game();
-//            error.setTitle("Network failure.");
-//            error.setSubGenre("");
-//            error.setRating(0);
-//        }
-//        else if (result.equals("")){
-//            Game noResultsFound = new Game();
-//            noResultsFound.setTitle("No results found.");
-//            noResultsFound.setSubGenre("");
-//            noResultsFound.setRating(0);
-//        }
-//        else {
-//            System.out.println("Response received");
-//            ArrayList<Game> games = gson.fromJson(result, new TypeToken<ArrayList<Game>>() {}.getType());
-//            for (Game g : games) {
-//                MainActivity.getInstance().addGame(g);
-//            }
-//        }
-//    }
 }

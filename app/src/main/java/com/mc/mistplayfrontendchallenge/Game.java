@@ -1,12 +1,15 @@
 package com.mc.mistplayfrontendchallenge;
 
+import android.media.Image;
+
 public class Game {
 
     private String imgURL;
-    private String subGenre;
+    private String subgenre;
     private String title;
     private double rating;
-    private int ratingCount;
+    private int rCount;
+
 
     public void setImgURL(String imgURL){
         this.imgURL = imgURL;
@@ -15,12 +18,13 @@ public class Game {
     public String getImgURL(){
         return imgURL;
     }
+
     public void setSubGenre(String subGenre){
-        this.subGenre = subGenre;
+        this.subgenre = subGenre;
     }
 
     public String getSubGenre(){
-        return subGenre;
+        return subgenre;
     }
 
     public void setTitle(String title){
@@ -40,14 +44,11 @@ public class Game {
     }
 
     public void setRatingCount(int ratingCount){
-        this.ratingCount = ratingCount;
+        this.rCount = ratingCount;
     }
 
     public int getRatingCount(){
-        return ratingCount;
+        return rCount;
     }
 
-    public String toString(){
-        return "HIHIHIHI";
-    }
 }

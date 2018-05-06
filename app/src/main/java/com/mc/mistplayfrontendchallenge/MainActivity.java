@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -23,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static MainActivity instance;
 
-    private static ArrayList<Game> gamesList = new ArrayList<Game>(); // CHANGE TO NONSTATIC AFTER TESTING
+    private static ArrayList<Game> gamesList = new ArrayList<Game>();
     private RecyclerView recyclerView;
-    private static SearchResultsAdapter adapter = new SearchResultsAdapter(gamesList);  // CHANGE TO NONSTATIC AFTER TESTING
+    private static SearchResultsAdapter adapter = new SearchResultsAdapter(gamesList);
 
     public static MainActivity getInstance() {
         if (instance == null){
@@ -39,11 +40,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create adapter for RecycleView
+        // Create and set adapter for RecyclerView
         recyclerView = (RecyclerView) findViewById(R.id.search_scroll);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(
+                getApplicationContext()
+        ));
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -67,18 +71,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Add listener to EditText input
+        // Add listener to EditText input to continuously show results as user types in query
         final EditText editTextSearch = (EditText) findViewById(R.id.search_edit_text);
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -98,28 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearGames(){
         gamesList.clear();
-        adapter.notifyDataSetChanged();
-    }
-
-
-    // REMOVE AFTER TESTING
-    public static void generateInitialGameResults(){
-        Game game1 = new Game();
-        game1.setTitle("The Witcher 3");
-        game1.setRating(5.0);
-        game1.setSubGenre("Strategy");
-        Game game2 = new Game();
-        game2.setTitle("Hearthstone");
-        game2.setRating(5.0);
-        game2.setSubGenre("Strategy");
-        Game game3 = new Game();
-        game3.setTitle("Skyrim 3");
-        game3.setSubGenre("Strategy");
-        game3.setRating(5.0);
-
-        gamesList.add(game1);
-        gamesList.add(game2);
-        gamesList.add(game3);
         adapter.notifyDataSetChanged();
     }
 }
