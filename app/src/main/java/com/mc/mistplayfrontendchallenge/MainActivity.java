@@ -9,38 +9,63 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toolbar;
 
+import java.time.chrono.MinguoChronology;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Game> gamesList;
+    private static MainActivity instance;
+
+    private static ArrayList<Game> gamesList = new ArrayList<Game>(); // CHANGE TO NONSTATIC AFTER TESTING
     private RecyclerView recyclerView;
-    private SearchResultsAdapter adapter;
+    private static SearchResultsAdapter adapter = new SearchResultsAdapter(gamesList);  // CHANGE TO NONSTATIC AFTER TESTING
+
+    public static MainActivity getInstance() {
+        if (instance == null){
+            instance = new MainActivity();
+        }
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         // Create adapter for RecycleView
         recyclerView = (RecyclerView) findViewById(R.id.search_scroll);
-        gamesList = new ArrayList<Game>();
-        adapter = new SearchResultsAdapter(gamesList);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-//        RelativeLayout myRelative = (RelativeLayout)findViewById(R.id.main_view);
-//        myRelative.addView(recyclerView);
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState){}
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+
+                // Load more results if the end of the current results has been reached
+                if ( (visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                    CommunicationManager.getInstance().loadMoreResults();
+                }
+            }
+        });
 
         // Add listener to EditText input
         final EditText editTextSearch = (EditText) findViewById(R.id.search_edit_text);
@@ -60,27 +85,25 @@ public class MainActivity extends AppCompatActivity {
                 // Update search results based on new input
                 EditText simpleEditText = (EditText) findViewById(R.id.search_edit_text);
                 String strValue = simpleEditText.getText().toString();
-                ArrayList<Game> searchResults = CommunicationManager.getInstance().searchString(strValue);
-                gamesList.clear();
-                for (Game result : searchResults){
-                    gamesList.add(result);
-                }
-                adapter.notifyDataSetChanged();
-
-                //REMOVE AFTER TESTING
-                generateInitialGameResults();
+                CommunicationManager.getInstance().searchString(strValue);
             }
         });
 
+    }
 
-        // REMOVE AFTER TESTING
-   //     generateInitialGameResults();
+    public void addGame(Game g){
+        gamesList.add(g);
+        adapter.notifyDataSetChanged();
+    }
 
+    public void clearGames(){
+        gamesList.clear();
+        adapter.notifyDataSetChanged();
     }
 
 
     // REMOVE AFTER TESTING
-    private void generateInitialGameResults(){
+    public static void generateInitialGameResults(){
         Game game1 = new Game();
         game1.setTitle("The Witcher 3");
         game1.setRating(5.0);
