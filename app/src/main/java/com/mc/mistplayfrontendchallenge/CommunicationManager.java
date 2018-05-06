@@ -18,7 +18,7 @@ public class CommunicationManager {
 
     public void searchString(String toSearch){
         query = toSearch;
-        // It is a neq query, so clear current search results.
+        // It is a new query, so clear current search results.
         MainActivity.getInstance().clearGames();
         // Request first page of results from server
         //new RequestTask().execute("http://10.0.2.2:8080/games/1");
